@@ -1,8 +1,9 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
-let server = require('../server');
+let server = require('../src/index');
 
 chai.use(chaiHttp);
+chai.should();
 
 
 describe('Test', () => {
@@ -10,10 +11,11 @@ describe('Test', () => {
   describe('/GET /', () => {
       it('it should GET status = 200', (done) => {
         chai.request(server)
-            .get('/book')
+            .get('/')
             .end((err, res) => {
                   res.should.have.status(200);
-              done();
+                  res.body.should.be.a('object');
+                  done();
             });
       });
   });
