@@ -1,19 +1,10 @@
-const app = require('express')()
-const httpServer = require("http").createServer(app)
-const dotenv = require('dotenv')
-dotenv.config()
-const listener = require('./socket')
-const router = require('./routes')
+const { httpServer, app } = require('./config/app')
+const logger = require('./utils/logger')
 
-const io = require("socket.io")(httpServer, {
-  cors: {
-    origin: process.env.APP_CORS,
-  },
-});
-
-app.use('/', router)
-listener(io)
-
-httpServer.listen(process.env.APP_PORT)
+try {
+  httpServer.listen(process.env.APP_PORT)
+} catch (error) {
+  logger.error(error)
+}
 
 module.exports = app;
