@@ -2,7 +2,7 @@ const app = require('express')()
 
 app.use('/', (req, res) => {
     res.json({
-        socket : 'running'
+        socket : 'this socket still in development'
     }).status(200)
 })
 
