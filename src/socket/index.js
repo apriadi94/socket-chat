@@ -1,12 +1,18 @@
+const { readdirSync } = require('fs')
+const { resolve } = require('path')
+
 
 module.exports = io => {
     io.on('connection', async socket => {
         socket.join('id')
         
-        socket.on('REQUEST_CONVERSATION', () => {
-            socket.emit('CONVERSATION_SENT', [{user : 1}, {user : 2}])
-        })
+        const listenersPath = resolve(`${__dirname}/listeners`);
+        readdirSync(listenersPath)
+        .filter(file => file.slice(-3) === '.js' && file !== 'index.js')
+        .forEach(file => {
+            require(resolve(listenersPath, file))({ socket });
+        });
         
-        socket.on("disconnect", () => console.log("user disconnected", socket));
+        socket.on("disconnect", () => console.log("user disconnected"));
     })
 } 
