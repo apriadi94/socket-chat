@@ -15,16 +15,15 @@ var options = {
   'force new connection': true
 };
 
-describe('Test', () => {
-  var client1;
+describe('Conversation', () => {
+  var socket;
 
   describe('emit REQUEST_CONVERSATION', () => {
     it('should listen of conversation and get array', function (done) {  
-      // Set up client1 connection
-      client1 = io.connect(socketUrl, options);
+      socket = io.connect(socketUrl, options);
   
-      client1.emit('REQUEST_CONVERSATION')
-      client1.on('CONVERSATION_SENT', function(msg){
+      socket.emit('REQUEST_CONVERSATION')
+      socket.on('CONVERSATION_SENT', function(msg){
         expect(msg).to.be.a('array');
         done();
       });
