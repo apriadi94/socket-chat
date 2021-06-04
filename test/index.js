@@ -8,7 +8,7 @@ chai.should();
 
 let expect = chai.expect;  
 
-var socketUrl = `http://localhost:${process.env.APP_PORT}`;
+var socketUrl = `http://localhost:8010`;
 
 var options = {  
   transports: ['websocket'],
