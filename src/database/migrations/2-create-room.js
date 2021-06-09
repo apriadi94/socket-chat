@@ -13,7 +13,11 @@ module.exports = {
       },
       ownerId: {
         type: Sequelize.INTEGER,
-        field: 'owner_id'
+        field: 'owner_id',
+        references: {
+          model: { tableName: 'users' },
+          key: 'id',
+        }
       },
       createdAt: {
         allowNull: false,
