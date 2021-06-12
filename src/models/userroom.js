@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      UserRoom.hasOne(models.Room, { as: 'room', foreignKey: 'roomId' })
     }
   };
   UserRoom.init({
