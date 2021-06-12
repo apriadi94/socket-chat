@@ -1,6 +1,7 @@
 
-module.exports = ({ socket }) => { 
-    socket.on('REQUEST_CONVERSATION', () => {
-        socket.emit('CONVERSATION_SENT', [{user : 1}, {user : 3}])
+module.exports = ({ socket, chatService }) => { 
+    socket.on('REQUEST_CONVERSATION', async () => {
+        const roomConversation = await chatService.roomConversation(socket.userId)
+        socket.emit('CONVERSATION_SENT', roomConversation)
     })
 }
