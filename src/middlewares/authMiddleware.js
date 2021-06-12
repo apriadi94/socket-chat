@@ -1,9 +1,9 @@
 const crypto = require('crypto')
-
+const { addUser } = require('../services/userService')
 const randomId = () => crypto.randomBytes(8).toString('hex');
 
 module.exports = io => {
-  io.use((socket, next) => {
+  io.use(async (socket, next) => {
     // TOKEN CHECKING
     const token = socket.handshake.auth.token ?? socket.handshake.query.token;
 
@@ -19,6 +19,9 @@ module.exports = io => {
       socket.userId = userId;
       socket.username = username;
       socket.profileImage = profileImage;
+
+      await addUser(userId, { name: username, profilePicture: profileImage })
+
       next();
     }
   });
