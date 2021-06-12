@@ -4,6 +4,17 @@ const { Op } = require('sequelize');
 moment.locale('id'); 
 
 exports.roomConversation = async ( userId ) => {
+    const getLastMessage = (roomId) => {
+      return new Promise(resolve => {
+        Models.Message.findOne({ 
+           where: { roomId },
+           order: [['createdAt', 'DESC']], 
+           limit: 1 
+        }).then(result => {
+          resolve(result)
+        })
+      })
+    }
     const countUnreadMessage = (roomId) => {
       return new Promise(resolve => {
         Models.Message.count({
@@ -55,12 +66,12 @@ exports.roomConversation = async ( userId ) => {
 
     const newData = await Promise.all(
         data.map(async it => {
-          const lastMessage = await it.getLastMessage({ order: [['createdAt', 'DESC']], limit: 1 })
-          const room = await getRoomName(it.room.id, it.room.type)
+          const lastMessage = await getLastMessage(it.room.id)
+          const roomData = await getRoomName(it.room.id, it.room.type)
           return {
             roomId: it.room.id,
             lastMessage: lastMessage.content,
-            room: room,
+            room: roomData,
             time: moment(lastMessage.createdAt).from(moment()),
             unRead: await countUnreadMessage(it.room.id)
           };
@@ -68,4 +79,28 @@ exports.roomConversation = async ( userId ) => {
       );
 
     return newData
+}
+
+
+exports.getMessage = async (roomId, userId) => {
+      const chat = await Models.Message.findAll({
+        where: { roomId },
+        order: [['createdAt', 'DESC']],
+      }).then(result => {
+        return Promise.all(
+          result.map(async value => {
+            return {
+              ...value.get(),
+              isFromSelf: userId === value.userId,
+              tanggal: moment(value.updatedAt).format('YYYY-MM-DD'),
+              jam: moment(value.updatedAt).format('HH:mm'),
+            };
+          }),
+        );
+      })
+      .catch(err => {
+        throw err;
+      });
+
+      return chat
 }
