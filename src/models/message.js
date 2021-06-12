@@ -36,7 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
     },
     type: DataTypes.STRING,
-    content: DataTypes.STRING
+    content: DataTypes.STRING,
+    isRead: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_read'
+    }
   }, {
     sequelize,
     modelName: 'Message',

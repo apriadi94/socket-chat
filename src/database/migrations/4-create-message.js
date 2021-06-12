@@ -34,6 +34,10 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
+      isRead: {
+        type: Sequelize.BOOLEAN,
+        field: 'is_read'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
