@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      UserRoom.hasOne(models.Room, { as: 'room', foreignKey: 'roomId' })
+      UserRoom.hasOne(models.Room, { as: 'room', foreignKey: 'id' })
+      UserRoom.hasOne(models.User, { as: 'user', foreignKey: 'id' })
+      UserRoom.hasOne(models.Message, { as: 'lastMessage', foreignKey: 'id' })
     }
   };
   UserRoom.init({
