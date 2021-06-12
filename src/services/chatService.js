@@ -85,7 +85,7 @@ exports.roomConversation = async ( userId ) => {
 exports.getMessage = async (roomId, userId) => {
       const chat = await Models.Message.findAll({
         where: { roomId },
-        order: [['createdAt', 'DESC']],
+        // order: [['createdAt', 'DESC']],
       }).then(result => {
         return Promise.all(
           result.map(async value => {
@@ -103,4 +103,16 @@ exports.getMessage = async (roomId, userId) => {
       });
 
       return chat
+}
+
+exports.storeMessage = async ({ userId, roomId, message, type }) => {
+  return new Promise(async resolve => {
+    if(roomId){
+      await Models.Message.create({
+        userId , roomId, content: message, type, isRead: false
+      })
+      const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
+      resolve(allUserRoom)
+    } 
+  })
 }

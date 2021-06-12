@@ -11,7 +11,7 @@ module.exports = io => {
         readdirSync(listenersPath)
             .filter(file => file.slice(-3) === '.js' && file !== 'index.js')
             .forEach(file => {
-                require(resolve(listenersPath, file))({ socket, chatService });
+                require(resolve(listenersPath, file))({ io, socket, chatService });
             });
         
         socket.on("disconnect", () => console.log("user disconnected"));
