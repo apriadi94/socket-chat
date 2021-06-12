@@ -5,7 +5,7 @@ const chatService = require('../services/chatService')
 
 module.exports = io => {
     io.on('connection', async socket => {
-        socket.join('id')
+        socket.join(socket.userId)
         
         const listenersPath = resolve(`${__dirname}/listeners`);
         readdirSync(listenersPath)
