@@ -45,9 +45,10 @@ exports.roomConversation = async ( userId ) => {
         })
     }
 
-    const data = await Models.UserRoom.findAll({ 
+    const data = await Models.UserRoom.findAll({
         where: { userId },
-        include: ['room', 'user']
+        include: ['room', 'user'],
+        order: [['updatedAt', 'DESC']],
     }).catch(err => {
         throw err
     })
