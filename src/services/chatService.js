@@ -82,30 +82,31 @@ exports.roomConversation = async ( userId ) => {
 }
 
 
-exports.getMessage = async (roomId, userId) => {
-      const chat = await Models.Message.findAll({
-        where: { roomId },
-        // order: [['createdAt', 'DESC']],
-      }).then(result => {
-        return Promise.all(
-          result.map(async value => {
-            return {
-              ...value.get(),
-              isFromSelf: userId === value.userId,
-              tanggal: moment(value.updatedAt).format('YYYY-MM-DD'),
-              jam: moment(value.updatedAt).format('HH:mm'),
-            };
-          }),
-        );
+exports.getMessage = (roomId, userId) => {
+      return new Promise(async resolve => {
+        const chat = await Models.Message.findAll({
+          where: { roomId },
+          // order: [['createdAt', 'DESC']],
+        }).then(result => {
+          return Promise.all(
+            result.map(async value => {
+              return {
+                ...value.get(),
+                isFromSelf: userId === value.userId,
+                tanggal: moment(value.updatedAt).format('YYYY-MM-DD'),
+                jam: moment(value.updatedAt).format('HH:mm'),
+              };
+            }),
+          );
+        })
+        .catch(err => {
+          throw err;
+        });
+        resolve(chat)
       })
-      .catch(err => {
-        throw err;
-      });
-
-      return chat
 }
 
-exports.storeMessage = async ({ userId, roomId, message, type }) => {
+exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
   return new Promise(async resolve => {
     if(roomId){
       await Models.Message.create({
@@ -113,6 +114,15 @@ exports.storeMessage = async ({ userId, roomId, message, type }) => {
       })
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
       resolve(allUserRoom)
-    } 
+    }else{
+      const room = await Models.Room.create({ type, ownerId: userId })
+
+      const bulkUserRoom = to.map(item => { return { userId: item, roomId: room.id }})
+      await Models.UserRoom.bulkCreate([...bulkUserRoom, { userId, roomId: room.id }])
+      await Models.Message.create({
+        userId , roomId: room.id , content: message, type, isRead: false
+      })
+      resolve(bulkUserRoom)
+    }
   })
 }
