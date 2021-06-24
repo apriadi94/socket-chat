@@ -1,6 +1,14 @@
 const Models = require('../models')
 const { logger } = require('../utils/logger')
 
+exports.getContact = () => {
+    return new Promise(resolve => {
+        Models.User.findAll().then(res => {
+            resolve(res)
+        })
+    })
+}
+
 exports.addUser = async (id, body) => {
     const checkUser = await Models.User.count({ where: { id } })
     if(checkUser === 0){
