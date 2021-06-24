@@ -20,7 +20,7 @@ module.exports = io => {
       socket.username = username;
       socket.profileImage = profileImage;
 
-      await addUser(userId, { name: username, profilePicture: profileImage })
+      // await addUser(userId, { name: username, profilePicture: profileImage })
 
       next();
     }

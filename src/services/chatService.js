@@ -1,5 +1,5 @@
 const Models = require('../models')
-const userService = require('./userService')
+// const userService = require('./userService')
 const moment = require('moment');
 const { Op } = require('sequelize');
 moment.locale('id'); 
@@ -116,9 +116,9 @@ exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
       resolve(allUserRoom)
     }else{
-      to.forEach(async item => {
-        await userService.addUser(item.id, { name: item.name, profilePicture: item.profilePicture })
-      })
+      // to.forEach(async item => {
+      //   await userService.addUser(item.id, { name: item.name, profilePicture: item.profilePicture })
+      // })
       const room = await Models.Room.create({ type, ownerId: userId })
 
       const bulkUserRoom = to.map(item => { return { userId: item.id, roomId: room.id }})
