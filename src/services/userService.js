@@ -9,3 +9,13 @@ exports.addUser = async (id, body) => {
         })
     }
 }
+
+
+exports.addNewUser = async (uid, body) => {
+    const checkUser = await Models.User.count({ where: { uid } })
+    if(checkUser === 0){
+        await Models.User.create(body).catch(err => {
+            logger.error(err)
+        })
+    }
+}
