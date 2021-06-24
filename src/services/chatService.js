@@ -119,7 +119,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
       // to.forEach(async item => {
       //   await userService.addUser(item.id, { name: item.name, profilePicture: item.profilePicture })
       // })
-      const room = await Models.Room.create({ type, ownerId: userId })
+      const room = await Models.Room.create({ type: 'PRIVATE', ownerId: userId })
 
       const bulkUserRoom = to.map(item => { return { userId: item.id, roomId: room.id }})
       await Models.UserRoom.bulkCreate([...bulkUserRoom, { userId, roomId: room.id }])
