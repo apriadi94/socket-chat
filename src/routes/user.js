@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const userService = require('../services/userService')
 
-router.route('/')
+router.route('')
     .get(async (req, res) => {
         const contacts = await userService.getContact()
         res.send({
@@ -10,10 +10,18 @@ router.route('/')
     })
     .post(async (req, res) => {
         const { uid, name, profilePicture, tokenNotif = null } = req.body
-        await userService.addNewUser(uid, { uid, name, profilePicture, tokenNotif })
+        const user = await userService.addNewUser(uid, { uid, name, profilePicture, tokenNotif })
+        let dataUser;
+
+        if(user){
+            dataUser = user
+        }else{
+            const getUser = await userService.getUserByUid(uid)
+            dataUser = getUser
+        }
 
         res.send({
-            data: 'sukses'
+            data: dataUser
         })
     })
     
