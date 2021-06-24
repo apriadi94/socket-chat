@@ -14,7 +14,7 @@ const io = require("socket.io")(httpServer, {
     },
 });
 
-app.use('/', router)
+app.use('/api', router)
 
 authMiddleware(io)
 listener(io)
