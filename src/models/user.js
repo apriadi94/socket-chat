@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   User.init({
     name: DataTypes.STRING,
+    uid: DataTypes.STRING,
     profilePicture: { type: DataTypes.TEXT, field: 'profile_picture' }
   }, {
     sequelize,
