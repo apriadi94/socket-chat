@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.TEXT,
         field: 'profile_picture'
       },
+      tokenNotif: {
+        type: Sequelize.STRING,
+        field: 'token_notif'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
