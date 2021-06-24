@@ -1,6 +1,14 @@
 const Models = require('../models')
 const { logger } = require('../utils/logger')
 
+exports.getUserByUid = (uid) => {
+    return new Promise(resolve => {
+        Models.User.findOne({ where: { uid } }).then(res => {
+            resolve(res)
+        })
+    })
+}
+
 exports.getContact = () => {
     return new Promise(resolve => {
         Models.User.findAll().then(res => {
