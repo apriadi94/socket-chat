@@ -22,7 +22,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       nowUpdate: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         field: 'now_update',
       },
       createdAt: {
