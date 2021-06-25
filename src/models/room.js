@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         model: { tableName: 'users' },
         key: 'id',
       },
+      nowUpdate: {
+        type: DataTypes.DATE, 
+        field: 'now_update',
+      },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     }
