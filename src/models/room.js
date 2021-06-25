@@ -16,20 +16,20 @@ module.exports = (sequelize, DataTypes) => {
   };
   Room.init({
     type: DataTypes.STRING,
-    ownerId: { 
+    ownerId: {
       type: DataTypes.INTEGER, 
       field: 'owner_id',
       references: {
         model: { tableName: 'users' },
         key: 'id',
       },
-      nowUpdate: {
-        type: DataTypes.DATE, 
-        field: 'now_update',
-      },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
-    }
+    },
+    nowUpdate: {
+      type: DataTypes.STRING, 
+      field: 'now_update',
+    },
   }, {
     sequelize,
     modelName: 'Room',

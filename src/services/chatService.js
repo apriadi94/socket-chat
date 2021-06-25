@@ -107,12 +107,38 @@ exports.getMessage = (roomId, userId) => {
       })
 }
 
+exports.getRoomData = (to, userId) => {
+  return new Promise(async resolve => {
+    const dataUserRoom = await Models.UserRoom.findAll({
+        where: { userId },
+    }).catch(err => {
+        throw err
+    })
+
+      const listRoom = []
+      await Promise.all(
+        await dataUserRoom.map(async item => {
+          const searchRoomData = await Models.UserRoom.findOne({where : { userId: to[0].id, roomId: item.roomId }})
+          if(searchRoomData){
+            listRoom.push(searchRoomData)
+          }
+        })
+      )
+      if(listRoom.length > 0){
+        resolve(listRoom[0].roomId)
+      }else{
+        resolve(null)
+      }
+  })
+}
+
 exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
   return new Promise(async resolve => {
     if(roomId){
       await Models.Message.create({
         userId , roomId, content: message, type, isRead: false
       })
+      await Models.UserRoom.update({ nowUpdate: moment().format('YYYY-MM-DD HH:mm:ss') }, { where: { roomId }})
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
       resolve(allUserRoom)
     }else{
@@ -122,11 +148,12 @@ exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
       const room = await Models.Room.create({ type: 'PRIVATE', ownerId: userId })
 
       const bulkUserRoom = to.map(item => { return { userId: item.id, roomId: room.id }})
+
       await Models.UserRoom.bulkCreate([...bulkUserRoom, { userId, roomId: room.id }])
       await Models.Message.create({
         userId , roomId: room.id , content: message, type, isRead: false
       })
-      resolve(bulkUserRoom)
+      resolve([...bulkUserRoom, {userId, roomId: room.id}])
     }
   })
 }

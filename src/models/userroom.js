@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     },
+    nowUpdate: {
+      type: DataTypes.STRING, 
+      field: 'now_update',
+    },
   }, {
     sequelize,
     modelName: 'UserRoom',
