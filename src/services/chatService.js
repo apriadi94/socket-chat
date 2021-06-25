@@ -4,6 +4,7 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 moment.locale('id'); 
 
+
 exports.roomConversation = async ( userId ) => {
     const getLastMessage = (roomId) => {
       return new Promise(resolve => {
@@ -23,7 +24,8 @@ exports.roomConversation = async ( userId ) => {
             roomId,
             userId: {
               [Op.not]: userId
-            } 
+            },
+            isRead: false
           }
         }).then(result => {
           resolve(result)
@@ -82,9 +84,20 @@ exports.roomConversation = async ( userId ) => {
     return newData
 }
 
+exports.changeUnreadmessage = async (roomId, userId) => {
+    await Models.Message.update({ isRead: true }, { 
+      where: { 
+        roomId,
+        userId: { 
+          [Op.not]: userId 
+        }} 
+    })
+    return true
+}
 
 exports.getMessage = (roomId, userId) => {
       return new Promise(async resolve => {
+        
         const chat = await Models.Message.findAll({
           where: { roomId },
           // order: [['createdAt', 'DESC']],
@@ -95,7 +108,7 @@ exports.getMessage = (roomId, userId) => {
                 ...value.get(),
                 isFromSelf: userId === value.userId,
                 tanggal: moment(value.updatedAt).format('YYYY-MM-DD'),
-                jam: moment(value.updatedAt).format('HH:mm'),
+                jam: moment(value.createdAt).from(moment()),
               };
             }),
           );
