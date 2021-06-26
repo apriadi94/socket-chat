@@ -4,6 +4,29 @@ const moment = require('moment');
 const { Op } = require('sequelize');
 moment.locale('id'); 
 
+exports.countAllUnreadMessage =  async ( userId ) => {
+  return new Promise(async resolve => {
+    const allRoomByuserId = await Models.UserRoom.findAll({ raw: true, where: { userId } })
+    let number = 0
+    await Promise.all(
+      allRoomByuserId.map(async item => {
+        const countMessage = await Models.Message.count({
+          where: {
+            roomId: item.roomId,
+            userId: {
+              [Op.not]: userId
+            },
+            isRead: false
+          }
+        })
+        number += countMessage
+      })
+    )
+  
+    resolve(number)
+  })
+}
+
 
 exports.roomConversation = async ( userId ) => {
     const getLastMessage = (roomId) => {
