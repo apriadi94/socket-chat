@@ -168,6 +168,20 @@ exports.getRoomData = (to, userId) => {
   })
 }
 
+exports.getToUserByRoom = (userId, roomId) => {
+  return new Promise(resolve => {
+    Models.UserRoom.findOne({ 
+      where: { 
+        roomId,
+        userId: { 
+          [Op.not]: userId 
+        }} 
+     }).then(res => {
+       resolve(res)
+     })
+  })
+}
+
 exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
   return new Promise(async resolve => {
     if(roomId){
