@@ -186,7 +186,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, h
   return new Promise(async resolve => {
     if(roomId){
       await Models.Message.create({
-        userId , roomId, content: message, type, isRead: false, url, width, height
+        userId , roomId, content: message, type, isRead: false, url: `img/${url}`, width, height
       })
       await Models.UserRoom.update({ nowUpdate: moment().format('YYYY-MM-DD HH:mm:ss') }, { where: { roomId }})
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
@@ -201,7 +201,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, h
 
       await Models.UserRoom.bulkCreate([...bulkUserRoom, { userId, roomId: room.id }])
       await Models.Message.create({
-        userId , roomId: room.id , content: message, type, isRead: false, url, width, height
+        userId , roomId: room.id , content: message, type, isRead: false, url: `img/${url}`, width, height
       })
       resolve([...bulkUserRoom, {userId, roomId: room.id}])
     }
