@@ -33,5 +33,9 @@ exports.addNewUser = async (uid, body) => {
         await Models.User.create(body).catch(err => {
             logger.error(err)
         })
+    }else{
+        if(body.tokenNotif !== null){
+            await Models.User.update({tokenNotif: body.tokenNotif}, { where: { uid } })
+        }
     }
 }

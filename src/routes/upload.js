@@ -18,9 +18,8 @@ router.route('/')
             } else {
                 
                 sizeOf(path, function (err, dimensions) {
-                    const width = dimensions.width > 1800 ? dimensions.width/2 : dimensions.width
-                    const height = dimensions.height > 1800 ? dimensions.height/2 : dimensions.height
-
+                    const width = dimensions.width > 1500 ? dimensions.width / 3 : dimensions.width
+                    const height = dimensions.width > 1500 ? dimensions.height / 3 : dimensions.height
 
                     compress_images(
                         path, "upload/img/",
