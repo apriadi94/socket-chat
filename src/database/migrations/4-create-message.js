@@ -34,6 +34,15 @@ module.exports = {
       content: {
         type: Sequelize.STRING
       },
+      url: {
+        type: Sequelize.STRING
+      },
+      height: {
+        type: Sequelize.STRING
+      },
+      width: {
+        type: Sequelize.STRING
+      },
       isRead: {
         type: Sequelize.BOOLEAN,
         field: 'is_read'

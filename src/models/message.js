@@ -37,6 +37,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: DataTypes.STRING,
     content: DataTypes.STRING,
+    url: {
+      type: DataTypes.STRING
+    },
+    height: {
+      type: DataTypes.STRING
+    },
+    width: {
+      type: DataTypes.STRING
+    },
     isRead: {
       type: DataTypes.BOOLEAN,
       field: 'is_read'

@@ -96,7 +96,7 @@ exports.roomConversation = async ( userId ) => {
           const roomData = await getRoomName(it.room.id, it.room.type)
           return {
             roomId: it.room.id,
-            lastMessage: lastMessage.content,
+            lastMessage: lastMessage.type === 'TEXT' ? lastMessage.content : 'Foto/File',
             room: roomData,
             time: moment(lastMessage.createdAt).from(moment()),
             unRead: await countUnreadMessage(it.room.id)
@@ -182,11 +182,11 @@ exports.getToUserByRoom = (userId, roomId) => {
   })
 }
 
-exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
+exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, height }) => {
   return new Promise(async resolve => {
     if(roomId){
       await Models.Message.create({
-        userId , roomId, content: message, type, isRead: false
+        userId , roomId, content: message, type, isRead: false, url, width, height
       })
       await Models.UserRoom.update({ nowUpdate: moment().format('YYYY-MM-DD HH:mm:ss') }, { where: { roomId }})
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
@@ -201,7 +201,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to }) => {
 
       await Models.UserRoom.bulkCreate([...bulkUserRoom, { userId, roomId: room.id }])
       await Models.Message.create({
-        userId , roomId: room.id , content: message, type, isRead: false
+        userId , roomId: room.id , content: message, type, isRead: false, url, width, height
       })
       resolve([...bulkUserRoom, {userId, roomId: room.id}])
     }

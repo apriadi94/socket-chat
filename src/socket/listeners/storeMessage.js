@@ -1,8 +1,8 @@
 
 module.exports = ({ io, socket, chatService }) => { 
-    socket.on('STORE_MESSAGE_CHAT', async ({ roomId, message, type, to }) => {
+    socket.on('STORE_MESSAGE_CHAT', async ({ roomId, message, type, to, url = null, width = null, height = null }) => {
         const userId = socket.userId
-        const storeMessage = await chatService.storeMessage({ userId, roomId, message, type, to })
+        const storeMessage = await chatService.storeMessage({ userId, roomId, message, type, to, url, width, height })
         const receipt = storeMessage.map(item => {return { userId: item.userId, roomId: item.roomId }})
 
         receipt.forEach(async item => {
