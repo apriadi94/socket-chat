@@ -2,7 +2,7 @@
 module.exports = ({ socket, chatService }) => { 
     socket.on('TYPE', async ( { roomId, to, status} ) => {
         let receipment
-        if(to.id){
+        if(to[0].id){
             receipment = to.id
         }else{
             const receipmentData = await chatService.getToUserByRoom(socket.userId, roomId)
