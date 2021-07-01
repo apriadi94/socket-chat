@@ -95,11 +95,19 @@ exports.roomConversation = async ( userId ) => {
         data.map(async it => {
           const lastMessage = await getLastMessage(it.room.id)
           const roomData = await getRoomName(it.room.id, it.room.type)
+
+          const date = moment(lastMessage.createdAt).format('YYYY-MM-DD')
+
+          var given = moment(date, "YYYY-MM-DD");
+          var current = moment().startOf('day');
+
+          const diffDaymoment = moment.duration(current.diff(given)).asDays()
           return {
             roomId: it.room.id,
             lastMessage: lastMessage.type === 'TEXT' ? lastMessage.content : 'Foto/File',
             room: roomData,
             time: moment(lastMessage.createdAt).from(moment()),
+            waktu: diffDaymoment === 0 ? moment(lastMessage.createdAt).format('LT') : diffDaymoment > 1 ? moment(lastMessage.createdAt).from(moment()) : moment(lastMessage.createdAt).format('DD/MM/YYYY'),
             unRead: await countUnreadMessage(it.room.id)
           };
         }),

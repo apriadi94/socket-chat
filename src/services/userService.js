@@ -11,7 +11,11 @@ exports.getUserByUid = (uid) => {
 
 exports.getContact = () => {
     return new Promise(resolve => {
-        Models.User.findAll().then(res => {
+        Models.User.findAll({
+            where: {
+                isAdmin: true
+            }
+        }).then(res => {
             resolve(res)
         })
     })

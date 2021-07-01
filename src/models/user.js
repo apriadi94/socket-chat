@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     name: DataTypes.STRING,
     uid: DataTypes.STRING,
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_admin',
+    },
     profilePicture: { type: DataTypes.TEXT, field: 'profile_picture' },
     tokenNotif: { type: DataTypes.STRING, field: 'token_notif' }
   }, {
