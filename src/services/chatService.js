@@ -183,6 +183,7 @@ exports.getToUserByRoom = (userId, roomId) => {
   })
 }
 
+
 exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, height }) => {
   return new Promise(async resolve => {
     if(roomId){
