@@ -11,6 +11,11 @@ module.exports = {
       uid: {
         type: Sequelize.STRING
       },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        field: 'is_admin',
+      },
+      jabatan: Sequelize.STRING,
       name: {
         type: Sequelize.STRING
       },

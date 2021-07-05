@@ -10,7 +10,7 @@ module.exports = ({ io, socket, chatService }) => {
             const chatMessages = await chatService.getMessage(item.roomId, item.userId)
             const roomConversation = await chatService.roomConversation(item.userId)
 
-            io.to(item.userId).emit('MESSAGE_SENT', chatMessages, item.roomId)
+            io.to(item.userId).emit('MESSAGE_SENT', chatMessages, item.roomId, 'SEND', chatMessages[chatMessages.length - 1].userId)
             io.to(item.userId).emit('CONVERSATION_SENT', roomConversation)
         })
     })

@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       field: 'is_admin',
     },
+    jabatan: DataTypes.STRING,
     profilePicture: { type: DataTypes.TEXT, field: 'profile_picture' },
     tokenNotif: { type: DataTypes.STRING, field: 'token_notif' }
   }, {

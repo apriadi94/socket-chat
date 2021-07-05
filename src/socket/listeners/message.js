@@ -18,6 +18,6 @@ module.exports = ({ socket, chatService }) => {
             }
         }
 
-        socket.emit('MESSAGE_SENT', chatMessages, dataRoomId)
+        socket.emit('MESSAGE_SENT', chatMessages, dataRoomId, '', '')
     })
 }

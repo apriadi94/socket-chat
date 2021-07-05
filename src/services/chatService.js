@@ -105,6 +105,8 @@ exports.roomConversation = async ( userId ) => {
           return {
             roomId: it.room.id,
             lastMessage: lastMessage.type === 'TEXT' ? lastMessage.content : 'Foto/File',
+            isFromSelf: userId === lastMessage.userId ,
+            isRead: lastMessage.isRead ,
             room: roomData,
             time: moment(lastMessage.createdAt).from(moment()),
             waktu: diffDaymoment === 0 ? moment(lastMessage.createdAt).format('LT') : diffDaymoment > 1 ? moment(lastMessage.createdAt).from(moment()) : moment(lastMessage.createdAt).format('DD/MM/YYYY'),
