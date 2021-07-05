@@ -71,7 +71,8 @@ exports.roomConversation = async ( userId ) => {
              }).then(result => {
               resolve({
                 name: result.user.name,
-                image: result.user.profilePicture
+                image: result.user.profilePicture,
+                id: result.user.id
               })
              })
           }else{
