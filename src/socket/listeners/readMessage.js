@@ -7,7 +7,7 @@ module.exports = ({ io, socket, chatService }) => {
 
         if(getTo){
             const chatMessages = await chatService.getMessage(roomId, getTo.userId)
-            const rommConversationForReceipt = await chatService.roomConversation(socket.userId)
+            const rommConversationForReceipt = await chatService.roomConversation(getTo.userId)
 
             socket.to(getTo.userId).emit('CHECKLIST', chatMessages)
             io.to(getTo.userId).emit('CONVERSATION_SENT', rommConversationForReceipt)

@@ -240,11 +240,11 @@ const kirimKePenerima = async (userId, pengirim, type, content) => {
 
   const headers = {
       "Content-Type": "application/json; charset=utf-8",
-      "Authorization": "Basic MTQ1ZWZhNzEtNzRmZC00ZTlmLWI5YjItY2JiN2RiNWM5ZmJj"
+      "Authorization": `Basic ${process.env.ONE_SIGNAL_KEY}`
   };
 
   var data = {
-      app_id: "578f30d1-ec07-441b-8257-fd251eeebebc",
+      app_id: `${process.env.ONE_SIGNAL_APP}`,
       headings : {"en" : pengirimData.name},
       contents: {"en": type === 'TEXT' ? content : 'File/Foto'},
       channel_for_external_user_ids: "push",
