@@ -205,7 +205,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, h
       const allUserRoom = await Models.UserRoom.findAll({ where : { roomId }})
       allUserRoom.forEach(async item => {
         if(item.userId !== userId){
-          await kirimKePenerima(item.userId, userId, type, message)
+          // await kirimKePenerima(item.userId, userId, type, message)
         }
       });
       resolve(allUserRoom)
@@ -223,7 +223,7 @@ exports.storeMessage = async ({ userId, roomId, message, type, to, url, width, h
       })
       bulkUserRoom.forEach(async item => {
         if(item.userId !== userId){
-          await kirimKePenerima(item.userId, userId, type, message)
+          // await kirimKePenerima(item.userId, userId, type, message)
         }
       });
       resolve([...bulkUserRoom, {userId, roomId: room.id}])
