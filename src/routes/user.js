@@ -24,6 +24,14 @@ router.route('')
             data: dataUser
         })
     })
+
+router.route('/not-admin')
+    .get(async (req, res) => {
+        const contacts = await userService.getContactNotAdmin()
+        res.send({
+            data: contacts
+        })
+    })
     
 
 module.exports = router

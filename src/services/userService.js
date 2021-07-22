@@ -21,6 +21,14 @@ exports.getContact = () => {
     })
 }
 
+exports.getContactNotAdmin = () => {
+    return new Promise(resolve => {
+        Models.User.findAll().then(res => {
+            resolve(res)
+        })
+    })
+}
+
 exports.addUser = async (id, body) => {
     const checkUser = await Models.User.count({ where: { id } })
     if(checkUser === 0){
