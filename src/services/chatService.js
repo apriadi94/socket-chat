@@ -275,3 +275,62 @@ const kirimKePenerima = async (userId, pengirim, type, content) => {
   req.write(JSON.stringify(data));
   req.end();
 }
+
+exports.tryToKirimManual = async (users, title, message, password) => {
+    return new Promise(async (resolve, reject) => {
+        if(password === process.env.NOTIF_PASSWORD){
+            for(const user of users){
+                await kirimKePenerimaManual(Number(user), title, message)
+            }
+            resolve('sukses')
+        }else{
+            reject('Password Salah')
+        }
+    })
+    
+}
+
+
+const kirimKePenerimaManual = async (userId, title, message) => {
+  //kirim notif oneSignal
+
+  const userData = await Models.User.findOne({ raw: true, where: { id: userId } })
+  await Models.Notif.create({ title, penerima: userData.name, message, tanggal: moment().format('YYYY-MM-DD') })
+
+  const headers = {
+      "Content-Type": "application/json; charset=utf-8",
+      "Authorization": `YzhiZTAwMDItMGU0MS00OTQ5LTgxMGUtNmVhNjI5MWZiODcw`
+  };
+
+  var data = {
+      app_id: `19d6f466-2184-4bdd-a1fe-699f9dd00038`,
+      headings : {"en" : title},
+      contents: {"en": message },
+      channel_for_external_user_ids: "push",
+      include_player_ids: [userData.tokenNotif]
+  };
+
+  const options = {
+      host: "onesignal.com",
+      port: 443,
+      path: "/api/v1/notifications",
+      method: "POST",
+      headers: headers
+  };
+
+
+  const req = https.request(options, function(res) {
+      res.on('data', function(data) {
+          console.log("Response:");
+          console.log(JSON.parse(data));
+      });
+  });
+
+  req.on('error', function(e) {
+      console.log("ERROR:");
+      console.log(e);
+  });
+
+  req.write(JSON.stringify(data));
+  req.end();
+}
